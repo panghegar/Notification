@@ -18,22 +18,12 @@
         android:padding="10dp"
         android:text="Kirim notifikasi"/>
 
-    <Button
-        android:id="@+id/btn_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_notif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:padding="10dp"
-        android:text="Update notifikasi"/>
-
     <TextView
         android:id="@+id/counterGanteng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Counter Ganteng: "
-        app:layout_constraintTop_toBottomOf="@+id/btn_update"
+        app:layout_constraintTop_toBottomOf="@+id/btn_notif"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginLeft="-200dp"
@@ -46,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="txtGanteng"
-        app:layout_constraintTop_toBottomOf="@+id/btn_update"
+        app:layout_constraintTop_toBottomOf="@+id/btn_notif"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp"

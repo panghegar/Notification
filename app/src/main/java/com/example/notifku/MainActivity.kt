@@ -82,23 +82,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        binding.btnUpdate.setOnClickListener {
-            val notifImage = BitmapFactory.decodeResource(resources,
-                R.drawable.download)
-            val builder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.baseline_notifications_24)
-                .setContentTitle("Notifku")
-                .setContentText("Ini update notifikasi")
-                .setStyle(
-                    NotificationCompat.BigPictureStyle()
-                        .bigPicture(notifImage)
-                )
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            notifManager.notify(notifId, builder.build())
-        }
-
-
     }
 }
