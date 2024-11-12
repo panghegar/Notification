@@ -8,21 +8,20 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.notifku.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    //Untuk value dari channelId & notifId bisa diisi sesuka hati
-    //Asalkan value channelId menggunakan string dan notifId menggunakan integer
     private val channelId = "TEST_NOTIF"
     private val notifId = 90
 
-    private fun updateCounters() {
+    companion object {
+        var instance: MainActivity? = null
+    }
+
+    fun updateCounters() {
         val sharedPref = getSharedPreferences("notifku_prefs", Context.MODE_PRIVATE)
         val countSuka = sharedPref.getInt("count_suka", 0)
         val countTidakSuka = sharedPref.getInt("count_tidak_suka", 0)
@@ -34,19 +33,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Update tampilan ketika activity terbuka atau kembali dari notifikasi
         updateCounters()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set instance
+        instance = this
+
         val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         binding.btnNotif.setOnClickListener {
+
+//            Mengubah img menjadi bitmap
             val notifImage = BitmapFactory.decodeResource(resources, R.drawable.download)
+            val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.hamil)
 
             val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 PendingIntent.FLAG_IMMUTABLE
@@ -62,9 +65,10 @@ class MainActivity : AppCompatActivity() {
 
             // Inisialisasi builder notifikasi
             val builder = NotificationCompat.Builder(this, channelId)
+                .setLargeIcon(largeIcon) // Set large icon dengan Bitmap
                 .setSmallIcon(R.drawable.baseline_notifications_24)
                 .setContentTitle("Counter")
-                .setContentText("Counter Ganteng")
+                .setContentText("Counter Beluga Cat")
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setStyle(NotificationCompat.BigPictureStyle().bigPicture(notifImage))
@@ -73,14 +77,14 @@ class MainActivity : AppCompatActivity() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val notifChannel = NotificationChannel(channelId, "Notifku", NotificationManager.IMPORTANCE_DEFAULT)
-                with(notifManager) {
-                    createNotificationChannel(notifChannel)
-                    notify(notifId, builder.build())
-                }
-            } else {
-                notifManager.notify(notifId, builder.build())
+                notifManager.createNotificationChannel(notifChannel)
             }
+            notifManager.notify(notifId, builder.build())
         }
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        instance = null
     }
 }

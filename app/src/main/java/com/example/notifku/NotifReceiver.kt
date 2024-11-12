@@ -23,5 +23,9 @@ class NotifReceiver: BroadcastReceiver() {
                 Toast.makeText(context, "Tidak Suka telah ditambahkan", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // Memanggil updateCounters dari instance MainActivity
+        MainActivity.instance?.updateCounters()
     }
+
 }
